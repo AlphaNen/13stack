@@ -17,17 +17,19 @@ function FooterLink({
 }) {
   const className =
     "inline-flex items-center gap-1 text-sm text-text-03 transition-colors hover:text-white";
+  const isMail = href.startsWith("mailto:");
 
-  if (external) {
+  if (external || isMail) {
     return (
       <a
         href={href}
-        target="_blank"
-        rel="noopener noreferrer"
+        {...(external
+          ? { target: "_blank", rel: "noopener noreferrer" }
+          : undefined)}
         className={className}
       >
         {label}
-        <ArrowUpRight size={12} className="opacity-70" />
+        {external ? <ArrowUpRight size={12} className="opacity-70" /> : null}
       </a>
     );
   }
@@ -66,7 +68,7 @@ export function Footer() {
             </a>
           </RevealItem>
 
-          <RevealItem className="grid flex-1 grid-cols-2 gap-10 sm:gap-16 lg:max-w-md">
+          <RevealItem className="grid flex-1 grid-cols-2 gap-10 sm:grid-cols-3 sm:gap-12 lg:max-w-xl">
             {footer.columns.map((column) => (
               <div key={column.title}>
                 <h3 className="text-sm font-medium text-white">

@@ -1,3 +1,5 @@
+import { siteEmails } from "@/lib/site";
+
 export const navigation = {
   links: [
     { label: "Home", href: "/" },
@@ -1244,21 +1246,21 @@ export const aboutPage = {
         initials: "AY",
         name: "Asad Yasin",
         title: "CEO & Founder",
-        email: "asad@13stack.com",
+        email: siteEmails.ceo,
         bio: "Full-stack developer and AI/ML engineer, leading product direction and technical architecture at 13Stack. Hands-on across the stack from system design to AI integration.",
       },
       {
         initials: "AS",
         name: "Anas Shafique",
         title: "CTO",
-        email: "anas@13stack.com",
+        email: siteEmails.cto,
         bio: "Owns technical strategy at 13Stack: full-stack architecture, cloud deployments across Azure and AWS, and applied LLM/ML engineering. Focused on the right solution for the problem, monolith or microservices, balancing best practices with real user experience.",
       },
       {
         initials: "ZH",
         name: "Zakria Hameed",
         title: "Head of Engineering",
-        email: "zakria@13stack.com",
+        email: siteEmails.engineering,
         bio: "Drives delivery end to end: refining development workflows, following best practices, and shipping on time without losing sight of what the client actually needs. Takes ownership of outcomes, not just tasks.",
       },
     ],
@@ -1416,7 +1418,7 @@ export const contactPage = {
     submittingLabel: "Sending…",
     successMessage:
       "Thanks — we received your note and will get back to you soon.",
-    note: "Prefer email? Write us directly and we will take it from there.",
+    note: "Prefer email? Write the studio, CEO, CTO, or Head of Engineering directly.",
     newsletterStudio: "Send me the 13Stack build log and studio updates.",
     newsletterSkedvio: "Also send Skedvio product updates.",
   },
@@ -1458,6 +1460,16 @@ export const footer = {
           external: true,
         },
         { label: "All products", href: "/products" },
+      ],
+    },
+    {
+      title: "Contact",
+      links: [
+        { label: siteEmails.ceo, href: `mailto:${siteEmails.ceo}` },
+        { label: siteEmails.cto, href: `mailto:${siteEmails.cto}` },
+        { label: siteEmails.engineering, href: `mailto:${siteEmails.engineering}` },
+        { label: siteEmails.sales, href: `mailto:${siteEmails.sales}` },
+        { label: siteEmails.support, href: `mailto:${siteEmails.support}` },
       ],
     },
   ],

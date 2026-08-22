@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { contactPage } from "@/lib/mock-data";
-import { siteConfig } from "@/lib/site";
+import { siteEmails } from "@/lib/site";
 import { submitConsultation, type ActionResult } from "@/app/actions/leads";
 import { RevealGroup, RevealItem } from "@/components/ui/Reveal";
 
@@ -10,6 +10,29 @@ const inputClasses =
   "w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3.5 text-sm text-white placeholder:text-text-03/80 transition-colors focus:border-primary focus:outline-none";
 
 const initialState: ActionResult | null = null;
+
+const leadershipEmails = [
+  siteEmails.hello,
+  siteEmails.ceo,
+  siteEmails.cto,
+  siteEmails.engineering,
+] as const;
+
+function DirectEmailLinks({ className = "" }: { className?: string }) {
+  return (
+    <span className={`flex flex-wrap gap-x-3 gap-y-1 ${className}`.trim()}>
+      {leadershipEmails.map((email) => (
+        <a
+          key={email}
+          href={`mailto:${email}`}
+          className="font-medium text-white transition-colors hover:text-primary"
+        >
+          {email}
+        </a>
+      ))}
+    </span>
+  );
+}
 
 export function ContactForm() {
   const [state, formAction, pending] = useActionState(
@@ -33,12 +56,7 @@ export function ContactForm() {
                 {state.warning}
               </p>
             ) : null}
-            <a
-              href={`mailto:${siteConfig.contactEmail}`}
-              className="mt-2 text-sm font-medium text-primary transition-colors hover:brightness-110"
-            >
-              {siteConfig.contactEmail}
-            </a>
+            <DirectEmailLinks className="mt-1 text-sm" />
           </div>
         ) : (
           <form action={formAction} className="flex flex-col gap-5">
@@ -145,15 +163,10 @@ export function ContactForm() {
                 : contactPage.form.submitLabel}
             </button>
 
-            <p className="text-xs leading-relaxed text-text-03">
-              {contactPage.form.note}{" "}
-              <a
-                href={`mailto:${siteConfig.contactEmail}`}
-                className="font-medium text-white transition-colors hover:text-primary"
-              >
-                {siteConfig.contactEmail}
-              </a>
-            </p>
+            <div className="flex flex-col gap-1.5 text-xs leading-relaxed text-text-03">
+              <p>{contactPage.form.note}</p>
+              <DirectEmailLinks />
+            </div>
           </form>
         )}
       </RevealItem>

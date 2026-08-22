@@ -1,6 +1,6 @@
 import { Mail } from "lucide-react";
 import { contactPage } from "@/lib/mock-data";
-import { siteConfig } from "@/lib/site";
+import { siteContacts } from "@/lib/site";
 import { RevealGroup, RevealItem } from "@/components/ui/Reveal";
 
 export function ContactHero() {
@@ -24,19 +24,32 @@ export function ContactHero() {
         </RevealItem>
       </div>
 
-      <RevealItem className="flex w-full flex-col gap-4 border-t border-white/10 pt-6">
-        <div className="flex flex-col gap-1.5">
-          <p className="text-[11px] font-medium tracking-wide text-text-03 uppercase">
-            {contactPage.emailLabel}
-          </p>
-          <a
-            href={`mailto:${siteConfig.contactEmail}`}
-            className="inline-flex items-center gap-2 text-sm font-medium text-white transition-colors hover:text-primary"
-          >
-            <Mail size={15} className="text-primary" />
-            {siteConfig.contactEmail}
-          </a>
-        </div>
+      <RevealItem className="flex w-full flex-col gap-5 border-t border-white/10 pt-6">
+        {siteContacts.map((group) => (
+          <div key={group.group} className="flex flex-col gap-2">
+            <p className="text-[11px] font-medium tracking-wide text-text-03 uppercase">
+              {group.group}
+            </p>
+            <ul className="flex flex-col gap-1.5">
+              {group.items.map((item) => (
+                <li key={item.email} className="flex items-baseline gap-3">
+                  <span className="w-[5.5rem] shrink-0 text-xs text-text-03">
+                    {item.label}
+                  </span>
+                  <a
+                    href={`mailto:${item.email}`}
+                    className="inline-flex min-w-0 items-center gap-1.5 text-sm font-medium text-white transition-colors hover:text-primary"
+                  >
+                    {group.group === "Studio" ? (
+                      <Mail size={14} className="shrink-0 text-primary" />
+                    ) : null}
+                    {item.email}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
         <div className="flex flex-col gap-1.5">
           <p className="text-[11px] font-medium tracking-wide text-text-03 uppercase">
             {contactPage.responseLabel}

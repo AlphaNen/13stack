@@ -3,7 +3,7 @@ import { ContactHero } from "@/components/sections/ContactHero";
 import { ContactForm } from "@/components/sections/ContactForm";
 import { HeroRule } from "@/components/ui/HeroRule";
 import { contactPage } from "@/lib/mock-data";
-import { siteConfig } from "@/lib/site";
+import { siteEmails } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -28,15 +28,29 @@ export default function ContactPage() {
       </section>
 
       <section className="px-gutter py-10 sm:py-12">
-        <p className="text-center text-sm text-text-03">
-          Or email{" "}
+        <p className="text-center text-sm leading-relaxed text-text-03">
+          Reach leadership directly at{" "}
           <a
-            href={`mailto:${siteConfig.contactEmail}`}
+            href={`mailto:${siteEmails.ceo}`}
             className="font-medium text-white transition-colors hover:text-primary"
           >
-            {siteConfig.contactEmail}
-          </a>{" "}
-          anytime.
+            {siteEmails.ceo}
+          </a>
+          {", "}
+          <a
+            href={`mailto:${siteEmails.cto}`}
+            className="font-medium text-white transition-colors hover:text-primary"
+          >
+            {siteEmails.cto}
+          </a>
+          {", or "}
+          <a
+            href={`mailto:${siteEmails.engineering}`}
+            className="font-medium text-white transition-colors hover:text-primary"
+          >
+            {siteEmails.engineering}
+          </a>
+          .
         </p>
       </section>
     </main>
