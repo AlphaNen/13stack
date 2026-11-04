@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
+import { siteFlags } from "@/lib/flags";
 import { aboutPage } from "@/lib/mock-data";
 import { RevealItem } from "@/components/ui/Reveal";
 import { staggerContainer, viewportOnce } from "@/lib/motion";
@@ -92,6 +93,11 @@ export function AboutBody() {
     customerVoice,
     location,
   } = aboutPage;
+  const reviews = customerVoice.reviews.filter(
+    (review) =>
+      siteFlags.showServices ||
+      !("audience" in review && review.audience === "services"),
+  );
 
   return (
     <section className="relative px-gutter pb-8 pt-2 sm:pb-10 sm:pt-3 md:pb-12">
@@ -283,8 +289,12 @@ export function AboutBody() {
                   {customerVoice.reviewsTitle}
                 </h3>
               </RevealItem>
-              <StaggerGrid className="grid w-full grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
-                {customerVoice.reviews.map((review) => (
+              <StaggerGrid
+                className={`grid w-full grid-cols-1 gap-3 sm:gap-4 ${
+                  reviews.length === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"
+                }`}
+              >
+                {reviews.map((review) => (
                   <RevealItem
                     key={review.quote.slice(0, 24)}
                     className="flex h-full flex-col gap-3 rounded-xl border border-white/10 bg-card-bg p-4 sm:p-5"

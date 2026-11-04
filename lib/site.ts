@@ -1,3 +1,5 @@
+import { copyFor } from "@/lib/flags";
+
 export const siteEmails = {
   hello: "hello@13stack.com",
   ceo: "ceo@13stack.com",
@@ -31,9 +33,14 @@ export const siteContacts = [
 
 export const siteConfig = {
   name: "13Stack",
-  description:
+  description: copyFor(
+    "13Stack builds production AI products — scheduling, agent memory, and tools that actually ship.",
     "13Stack designs, builds, and ships production AI systems, full-stack products, and agentic automation.",
-  defaultTitle: "13Stack | AI Systems and Products",
+  ),
+  defaultTitle: copyFor(
+    "13Stack | AI Products",
+    "13Stack | AI Systems and Products",
+  ),
   contactEmail: siteEmails.hello,
   emails: siteEmails,
 };

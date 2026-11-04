@@ -1,22 +1,33 @@
+import { copyFor, siteFlags } from "@/lib/flags";
 import { siteEmails } from "@/lib/site";
+
+const serviceNavLinks = [
+  { label: "Services", href: "/services" },
+  { label: "Work", href: "/work" },
+];
 
 export const navigation = {
   links: [
     { label: "Home", href: "/" },
     { label: "About", href: "/about" },
-    { label: "Services", href: "/services" },
-    { label: "Work", href: "/work" },
+    ...(siteFlags.showServices ? serviceNavLinks : []),
     { label: "Products", href: "/products" },
     { label: "Build log", href: "/blog" },
   ],
-  cta: "Book a consultation",
+  cta: copyFor("Get in touch", "Book a consultation"),
 };
 
 export const hero = {
-  eyebrow: "AI systems & products, engineered end to end",
+  eyebrow: copyFor(
+    "AI products, engineered end to end",
+    "AI systems & products, engineered end to end",
+  ),
   title: ["Ideas, Engineered", "Into Intelligence"],
   subtitle: [
-    "We build AI systems and products that actually ship,",
+    copyFor(
+      "We build AI products that actually ship,",
+      "We build AI systems and products that actually ship,",
+    ),
     "not prototypes that stall at the pitch deck.",
     "Engineering-first. AI-native. Built to run in production.",
   ],
@@ -25,7 +36,7 @@ export const hero = {
     { label: "Full-stack", detail: "UI to infrastructure" },
     { label: "Automation", detail: "Agents in production" },
   ],
-  cta: "Book a consultation",
+  cta: copyFor("Get in touch", "Book a consultation"),
 };
 
 export const trustedCompanies = {
@@ -148,11 +159,16 @@ export const howWeBuild = {
 export const homeProducts = {
   eyebrow: "Our products",
   title: "Built by us, used by you",
-  subtitle:
+  subtitle: copyFor(
+    "We ship our own products, put them in front of real users, and keep them running.",
     "We do not only build for clients. We ship our own products, put them in front of real users, and keep them running.",
-  body: "Products force the hard parts: taste, reliability, support, and the discipline to keep shipping after launch. That pressure is intentional. It keeps our client work honest.",
+  ),
+  body: copyFor(
+    "Products force the hard parts: taste, reliability, support, and the discipline to keep shipping after launch.",
+    "Products force the hard parts: taste, reliability, support, and the discipline to keep shipping after launch. That pressure is intentional. It keeps our client work honest.",
+  ),
   aside:
-    "If you want the deep dive into features and flows, that lives on the products page. Here is simply where we stand by what we run ourselves.",
+    "If you want the deep dive into features and flows, that lives on each product page. Here is simply where we stand by what we run ourselves.",
   viewAllLabel: "See how they work",
   viewAllHref: "/products",
   items: [
@@ -162,7 +178,7 @@ export const homeProducts = {
       name: "Skedvio",
       meta: "Live · skedvio.com",
       line: "How we book our own calls.",
-      href: "/products#skedvio",
+      href: "/products/skedvio",
     },
     {
       id: "elim-mcp",
@@ -170,7 +186,16 @@ export const homeProducts = {
       name: "elim-mcp",
       meta: "Open source · npm",
       line: "How our agents keep context.",
-      href: "/products#elim-mcp",
+      href: "/products/elim-mcp",
+    },
+    {
+      id: "fylmkit",
+      mark: "F",
+      name: "Fylmkit",
+      badge: "Coming soon",
+      meta: "fylmkit.com",
+      line: "AI video that stays on brand.",
+      href: "/products/fylmkit",
     },
   ],
 };
@@ -219,8 +244,10 @@ export const homeWork = {
 
 export const productFeature = {
   title: "Scheduling, without the back-and-forth",
-  subtitle:
+  subtitle: copyFor(
+    "Skedvio is our own product, built for real calendars and real users. See it in action.",
     "Skedvio is our own product, built the way we build for clients. See it in action.",
+  ),
   badge: "Live product",
   cta: "Try Skedvio free",
   ctaHref: "https://skedvio.com",
@@ -324,22 +351,31 @@ export const homeAbout = {
   title: "Built by the people who ship it",
   subtitle:
     "Founder-led engineering. Direct ownership. Systems meant to run in production, not look good in a deck.",
-  body: "The same engineers who scope the work write the code, catch the edge cases, and stay on it after launch.",
+  body: copyFor(
+    "The same engineers who design the product write the code, catch the edge cases, and keep shipping after launch.",
+    "The same engineers who scope the work write the code, catch the edge cases, and stay on it after launch.",
+  ),
   aside: "Leadership, practices, and the full story live on the about page.",
-  cta: "Why teams choose 13Stack",
+  cta: copyFor("About 13Stack", "Why teams choose 13Stack"),
   ctaHref: "/about",
   slides: [
     {
       id: "ownership",
       label: "01",
-      title: "Engineers own the work",
-      line: "The people who scope it are the people who build it. No handoff theater.",
+      title: copyFor("Engineers own the product", "Engineers own the work"),
+      line: copyFor(
+        "The people who design it are the people who build it. No handoff theater.",
+        "The people who scope it are the people who build it. No handoff theater.",
+      ),
     },
     {
       id: "direct",
       label: "02",
       title: "Talk to the builders",
-      line: "You work with the team writing the system. No account layer in the middle.",
+      line: copyFor(
+        "You hear from the team writing the product. No account layer in the middle.",
+        "You work with the team writing the system. No account layer in the middle.",
+      ),
     },
     {
       id: "production",
@@ -405,7 +441,17 @@ export type BlogArticlePost = BlogPostShared & {
   sections: BlogSection[];
 };
 
-export type BlogPost = BlogNewsPost | BlogArticlePost;
+type BlogPostVisibility = {
+  requiresServices?: boolean;
+};
+
+export type BlogPost = (BlogNewsPost | BlogArticlePost) & BlogPostVisibility;
+
+export function getVisibleBlogPosts() {
+  return blogPosts.filter(
+    (post) => siteFlags.showServices || !post.requiresServices,
+  );
+}
 
 export const blogPosts: BlogPost[] = [
   {
@@ -424,13 +470,13 @@ export const blogPosts: BlogPost[] = [
       text: "Public beta is live. Claim founding pricing when you create your workspace, then share a booking link that respects real calendars and timezones.",
     },
     body: [
-      "Skedvio started as the booking flow we wanted for our own consults. Calendar ping pong was eating time we would rather spend shipping.",
+      "Skedvio started as the booking flow we wanted for our own meetings. Calendar ping pong was eating time we would rather spend shipping.",
       "Guest booking is open now. Share a link, let people pick a slot in their timezone, and keep availability tied to Google Calendar instead of a stale fixed grid.",
       "We will keep iterating in public. If something feels off, tell us. The product walkthrough covers sync, availability rules, and the booking path end to end.",
     ],
     links: [
       { label: "Open Skedvio", href: "https://skedvio.com", external: true },
-      { label: "Product walkthrough", href: "/products#skedvio" },
+      { label: "Product walkthrough", href: "/products/skedvio" },
     ],
   },
   {
@@ -459,12 +505,13 @@ export const blogPosts: BlogPost[] = [
         href: "https://www.npmjs.com/package/elim-mcp",
         external: true,
       },
-      { label: "Install walkthrough", href: "/products#elim-mcp" },
+      { label: "Install walkthrough", href: "/products/elim-mcp" },
     ],
   },
   {
     slug: "why-we-ship-our-own-products",
     kind: "article",
+    requiresServices: true,
     title: "Why we ship our own products",
     excerpt:
       "Client work is half the story. Building and running our own tools keeps the delivery bar honest.",
@@ -720,6 +767,7 @@ function canAnswer(cites: string[], policy: AnswerPolicy) {
   {
     slug: "leaseform-in-production",
     kind: "news",
+    requiresServices: true,
     title: "LeaseForm is live for Nova Scotia landlords",
     excerpt:
       "Wizard drafting, PDF packages, and a landlord dashboard are in production. Early teams get onboarding support while we keep tightening the lease lifecycle.",
@@ -763,9 +811,39 @@ export const homeBlog = {
 
 export const blogPage = {
   eyebrow: "BUILD LOG",
-  title: "News & notes",
+  headingFrom: "News",
+  headingTo: "Notes",
   subtitle:
     "Product announcements, shipping updates, and writing from the 13Stack team on AI systems that make it to production.",
+  heroProducts: {
+    label: "Written from the products",
+    items: [
+      {
+        id: "skedvio",
+        mark: "S",
+        name: "Skedvio",
+        status: "Live",
+        line: "Scheduling intelligence",
+        href: "/products/skedvio",
+      },
+      {
+        id: "elim-mcp",
+        mark: "e",
+        name: "elim-mcp",
+        status: "Open source",
+        line: "Agent memory on npm",
+        href: "/products/elim-mcp",
+      },
+      {
+        id: "fylmkit",
+        mark: "F",
+        name: "Fylmkit",
+        status: "Soon",
+        line: "AI video on brand",
+        href: "/products/fylmkit",
+      },
+    ],
+  },
   filters: [
     { id: "all" as const, label: "All" },
     { id: "news" as const, label: "News" },
@@ -777,10 +855,12 @@ export const blogPage = {
 };
 
 export const cta = {
-  title: "Ready to build something real?",
-  subtitle:
+  title: copyFor("Want to try what we ship?", "Ready to build something real?"),
+  subtitle: copyFor(
+    "Reach out about Skedvio, elim-mcp, Fylmkit, or what we are building next.",
     "Tell us what you're building. We'll help you find the fastest path from idea to shipped product.",
-  cta: "Book a consultation",
+  ),
+  cta: copyFor("Get in touch", "Book a consultation"),
 };
 
 export const servicesPage = {
@@ -993,8 +1073,10 @@ export const servicesPage = {
 
 export const productsPage = {
   eyebrow: "AI STUDIO · PRODUCTS",
-  subtitle:
+  subtitle: copyFor(
+    "Not demos or pitch decks. Tools we built for ourselves, run in production every day, and keep shipping.",
     "Not demos or pitch decks. Tools we built for ourselves, run in production every day, and keep shipping. Same standards we bring to client work.",
+  ),
   heroStages: [
     {
       id: "idea",
@@ -1025,7 +1107,125 @@ export const productsPage = {
     eyebrow: "Products",
     title: "What we ship",
     subtitle:
-      "Live tools from our own stack: scheduling that stays conflict free, and agent memory that remembers what already failed so work moves forward.",
+      "Live tools from our own stack, plus what is next. Open a product page for the walkthrough, then jump to the live app, npm, or waitlist.",
+  },
+  proof: [
+    { label: "Live products", value: "2" },
+    { label: "Coming soon", value: "1" },
+    { label: "Skedvio", value: "Live · PH" },
+    { label: "Fylmkit", value: "Waitlist" },
+  ],
+  catalog: [
+    {
+      id: "skedvio",
+      mark: "S",
+      name: "Skedvio",
+      badge: "Live product",
+      meta: "skedvio.com",
+      line: "Scheduling intelligence that keeps calendars conflict-free and booking links guest-ready.",
+      points: [
+        "Google Calendar sync with live availability",
+        "Guest booking links in their timezone",
+        "AI daily brief for overloaded weeks",
+      ],
+      href: "/products/skedvio",
+      cta: "Open Skedvio page",
+      externalHref: "https://skedvio.com",
+      externalLabel: "Try Skedvio free",
+    },
+    {
+      id: "elim-mcp",
+      mark: "e",
+      name: "elim-mcp",
+      badge: "Open source · npm",
+      meta: "elim-mcp on npm",
+      line: "Elimination-ledger memory for coding agents — remembers what was ruled out, not just what is true.",
+      points: [
+        "remember · recall · get_current · trace",
+        "Local SQLite ledger, no API key",
+        "Works across Cursor, Claude Code, and more",
+      ],
+      href: "/products/elim-mcp",
+      cta: "Open elim-mcp page",
+      externalHref: "https://www.npmjs.com/package/elim-mcp",
+      externalLabel: "View on npm",
+    },
+    {
+      id: "fylmkit",
+      mark: "F",
+      name: "Fylmkit",
+      badge: "Coming soon",
+      meta: "fylmkit.com",
+      line: "AI video that stays on brand — script, voice, captions, and every format from a few notes.",
+      points: [
+        "Brand kit once: colours, fonts, logo, tone",
+        "Script, scenes, voiceover, and word-timed captions",
+        "Short form first · reels, TikTok, Shorts, LinkedIn",
+      ],
+      href: "/products/fylmkit",
+      cta: "Open Fylmkit page",
+      externalHref: "https://fylmkit.com",
+      externalLabel: "Join the waitlist",
+    },
+  ],
+  principles: {
+    eyebrow: "How we ship",
+    title: "The bar for every product",
+    subtitle:
+      "We only keep shipping what we would run ourselves. That pressure shapes taste, reliability, and ownership after launch.",
+    items: [
+      {
+        title: "Start from a real need",
+        body: "Skedvio came from calendar ping-pong. elim-mcp from agents rechecking dead ends. Fylmkit from brands that need constant video with no video team.",
+      },
+      {
+        title: "Ship into production",
+        body: "Live products leave the waitlist. Real users, real traffic, and a team that stays on the hook after day one. Coming-soon tools get the same bar before launch.",
+      },
+      {
+        title: "Keep iterating in public",
+        body: "Build log posts, npm releases, and product updates stay visible. Feedback lands in the roadmap instead of a deck.",
+      },
+      {
+        title: "Own the hard parts",
+        body: "Sync edge cases, memory scope, brand fidelity, and boring operational details get the same attention as the first demo path.",
+      },
+    ],
+  },
+  audiences: {
+    eyebrow: "Who they are for",
+    title: "Different jobs. Same shipping standard.",
+    subtitle:
+      "Three products, three audiences — each built to remove friction that keeps showing up in real work.",
+    items: [
+      {
+        product: "Skedvio",
+        title: "Operators and founders",
+        body: "Anyone who books calls across calendars and timezones without wanting another scheduling spreadsheet.",
+        href: "/products/skedvio",
+      },
+      {
+        product: "elim-mcp",
+        title: "Builders using coding agents",
+        body: "Engineers who want agents to skip already-ruled-out paths across sessions, branches, and tools.",
+        href: "/products/elim-mcp",
+      },
+      {
+        product: "Fylmkit",
+        title: "Brands that post constantly",
+        body: "Founders, agencies, ecommerce, educators, and local businesses that need on-brand video without a video team.",
+        href: "/products/fylmkit",
+      },
+    ],
+  },
+  updates: {
+    eyebrow: "Build log",
+    title: "Latest product notes",
+    subtitle:
+      "Short updates when something goes live. Longer reads when a lesson is worth writing down.",
+    viewAllLabel: "Browse the build log",
+    viewAllHref: "/blog",
+    slugs: ["skedvio-live-booking", "elim-mcp-on-npm"],
   },
   skedvio: {
     id: "skedvio",
@@ -1079,6 +1279,298 @@ export const productsPage = {
       "3. N+1 query on bookings feed      [confirmed · s2]",
       "→ handoff-ready trail for commit / PR",
     ],
+  },
+};
+
+export const skedvioProductPage = {
+  slug: "skedvio",
+  eyebrow: "Product · Skedvio",
+  name: "Skedvio",
+  title: "Your calendar, finally working for you",
+  subtitle:
+    "Connect your calendars, set when you are available, and share a booking link. Guests pick a time in their timezone — every slot is checked live so nothing double-books.",
+  badge: "Live product",
+  primaryCta: { label: "Try Skedvio free", href: "https://skedvio.com" },
+  secondaryCta: {
+    label: "View on Product Hunt",
+    href: "https://www.producthunt.com/products/skedvio-scheduling-intelligence/launches/skedvio?utm_source=other&utm_medium=social",
+  },
+  highlights: [
+    {
+      title: "Google Calendar sync",
+      body: "Incremental sync and webhooks keep events fresh so availability always reflects reality.",
+    },
+    {
+      title: "Live availability",
+      body: "Open slots are computed across every connected calendar, including holidays and manual blocks.",
+    },
+    {
+      title: "Verified before confirm",
+      body: "Every booking is checked live against your calendar before it lands, so double-books stay out.",
+    },
+  ],
+  steps: {
+    eyebrow: "How it works",
+    title: "From connected calendar to confirmed booking",
+    subtitle:
+      "Three steps — no complicated setup, no separate scheduling tool to maintain.",
+    items: [
+      {
+        label: "01",
+        title: "Connect your calendars",
+        body: "Link Google Calendar today — Outlook read sync is supported too. Skedvio keeps events fresh with incremental sync and webhooks.",
+      },
+      {
+        label: "02",
+        title: "Set when you are open",
+        body: "Define availability rules once. We compute open slots across every connected calendar, respecting holidays and manual blocks.",
+      },
+      {
+        label: "03",
+        title: "Share a booking link",
+        body: "Send one link. Guests pick a time in their timezone. Confirmed bookings land on your calendar — no email tennis.",
+      },
+    ],
+  },
+  capabilities: {
+    eyebrow: "Capabilities",
+    title: "Everything you need to stay bookable",
+    subtitle:
+      "Scheduling intelligence that respects how your calendar actually works.",
+    items: [
+      {
+        title: "Cache-first sync",
+        body: "Connect Google (Outlook soon) and keep events fresh with incremental sync and webhooks.",
+      },
+      {
+        title: "Availability engine",
+        body: "Define rules once. Open slots are computed across every connected calendar in real time.",
+      },
+      {
+        title: "Share links",
+        body: "Send a booking link. Guests pick a slot in their timezone — no back-and-forth.",
+      },
+      {
+        title: "Zero double-bookings",
+        body: "Every booking is verified live against your calendar before it is confirmed.",
+      },
+      {
+        title: "AI daily brief",
+        body: "A concise summary of your day with overload warnings when things get heavy.",
+      },
+      {
+        title: "Multi-account",
+        body: "Work, personal, and shared calendars — manage them all from one clean dashboard.",
+      },
+      {
+        title: "Guest-friendly booking",
+        body: "Public links show open windows in the guest timezone. They reserve, confirm details, and get a calendar invite without an account.",
+      },
+      {
+        title: "Built for busy weeks",
+        body: "Merged availability, holiday awareness, and an optional AI brief help you see overload before it hits.",
+      },
+    ],
+  },
+  sibling: {
+    label: "Also from 13Stack",
+    name: "Fylmkit",
+    line: "AI video that stays on brand. Coming soon.",
+    href: "/products/fylmkit",
+  },
+};
+
+export const elimMcpProductPage = {
+  slug: "elim-mcp",
+  eyebrow: "Product · elim-mcp",
+  name: "elim-mcp",
+  title: "Remembers what agents already ruled out",
+  subtitle:
+    "An MCP server that records what coding agents have tried, eliminated, and solved — so the next session skips the same dead ends across chats, branches, and tools.",
+  badge: "Open source · MIT · npm",
+  primaryCta: {
+    label: "View on npm",
+    href: "https://www.npmjs.com/package/elim-mcp",
+  },
+  secondaryCta: {
+    label: "GitHub",
+    href: "https://github.com/DevAsadYasin/elim-mcp",
+  },
+  highlights: [
+    {
+      title: "Ruled-out first",
+      body: "First-class kinds for ruled_out, solution, decision, and note — not just generic memory blobs.",
+    },
+    {
+      title: "Local SQLite ledger",
+      body: "Project-local `.elim/ledger.db` with FTS5 search. No API key. Branch and session captured automatically.",
+    },
+    {
+      title: "Four tools only",
+      body: "remember, recall, get_current, and trace. Small enough for MCP clients to pick reliably.",
+    },
+  ],
+  why: {
+    eyebrow: "Why it exists",
+    title: "Dead ends should not get thrown away",
+    body: "Fresh chats and tool switches wipe mid-debug reasoning. Existing memory tools are good at facts and decisions. elim-mcp is for the negative trail — what was investigated and eliminated — chained as one investigation you can recall later.",
+  },
+  tools: {
+    eyebrow: "Tools",
+    title: "The four MCP tools",
+    items: [
+      {
+        name: "remember",
+        body: "Write a ruled-out theory, solution, decision, or note into the ledger.",
+      },
+      {
+        name: "recall",
+        body: "Search before re-investigating so agents skip known dead ends.",
+      },
+      {
+        name: "get_current",
+        body: "Load recent records for a chat, branch, or project scope.",
+      },
+      {
+        name: "trace",
+        body: "Walk the follows_from chain for one full investigation trail.",
+      },
+    ],
+  },
+  install: {
+    eyebrow: "Install",
+    title: "Drop it into Cursor in one paste",
+    subtitle:
+      "No API key. Restart the editor and it works. Pin ELIM_PROJECT_ROOT so the ledger stays in the open project.",
+    filename: ".cursor/mcp.json",
+    code: `{
+  "mcpServers": {
+    "elim": {
+      "command": "npx",
+      "args": ["-y", "elim-mcp"],
+      "env": {
+        "ELIM_PROJECT_ROOT": "\${workspaceFolder}"
+      }
+    }
+  }
+}`,
+  },
+  details: {
+    eyebrow: "How it works",
+    title: "Built for day-to-day debugging",
+    items: [
+      {
+        title: "Scopes that match how you work",
+        body: "chat · branch (default) · project · global — with git branch auto-capture for the common case.",
+      },
+      {
+        title: "Investigation chains",
+        body: "follows_from links ruled-out steps into one trail you can dump for a handoff or commit message.",
+      },
+      {
+        title: "Native SQLite performance",
+        body: "better-sqlite3 prefers a prebuilt binary. Most macOS, Windows, and Linux glibc setups never compile anything.",
+      },
+    ],
+  },
+  sibling: {
+    label: "Also from 13Stack",
+    name: "Fylmkit",
+    line: "AI video that stays on brand. Coming soon.",
+    href: "/products/fylmkit",
+  },
+};
+
+export const fylmkitProductPage = {
+  slug: "fylmkit",
+  eyebrow: "Product · Fylmkit",
+  name: "Fylmkit",
+  title: "AI video that stays on brand",
+  subtitle:
+    "Fylmkit turns a few notes into a finished video that already looks and sounds like your brand. Coming soon — join the waitlist for early access and founding member pricing.",
+  badge: "Coming soon",
+  primaryCta: {
+    label: "Join the waitlist",
+    href: "https://fylmkit.com",
+  },
+  secondaryCta: {
+    label: "Talk to 13Stack",
+    href: "/contact",
+  },
+  highlights: [
+    {
+      title: "Brand kit once",
+      body: "Set colours, fonts, logo, and tone of voice. Every video after that already looks and sounds like you.",
+    },
+    {
+      title: "Notes to finished cut",
+      body: "Give it something to say. It writes the script in your voice, plans scenes, generates voiceover, and times captions to the word.",
+    },
+    {
+      title: "Every format you need",
+      body: "Render for reels, TikTok, Shorts, and LinkedIn without an editor, stock footage hunt, or monthly agency bill.",
+    },
+  ],
+  steps: {
+    eyebrow: "How it works",
+    title: "From brand kit to publish-ready video",
+    subtitle:
+      "No editor required. Set the brand once, then keep shipping clips that stay on voice.",
+    items: [
+      {
+        label: "01",
+        title: "Set up your brand",
+        body: "Colours, fonts, logo, and tone of voice — locked in once so every render stays consistent.",
+      },
+      {
+        label: "02",
+        title: "Give it something to say",
+        body: "Drop a few notes. Fylmkit writes the script in your voice, plans the scenes, and generates the voiceover.",
+      },
+      {
+        label: "03",
+        title: "Render every format",
+        body: "Captions timed to the word. Short-form cuts for reels, TikTok, Shorts, and LinkedIn — ready to post.",
+      },
+    ],
+  },
+  capabilities: {
+    eyebrow: "Built for",
+    title: "Teams that post constantly",
+    subtitle:
+      "It already knows how different industries should look, so a clothing brand and a developer tool never get the same video.",
+    items: [
+      {
+        title: "Founders and solo brands",
+        body: "Ship constant short-form without hiring a video team or burning evenings in an editor.",
+      },
+      {
+        title: "Agencies running several clients",
+        body: "Keep each brand kit separate so client A never sounds like client B.",
+      },
+      {
+        title: "Ecommerce and clothing",
+        body: "Product drops, lookbooks, and promos that match the storefront — not generic stock energy.",
+      },
+      {
+        title: "Educators and local businesses",
+        body: "Explainers and updates that stay clear, on-brand, and ready for the platforms you already use.",
+      },
+      {
+        title: "Short form first",
+        body: "Reels, TikTok, Shorts, and LinkedIn now. Longer YouTube-style video is next on the roadmap.",
+      },
+      {
+        title: "No agency tax",
+        body: "No editor, no stock footage scramble, no monthly retainer just to keep posting.",
+      },
+    ],
+  },
+  sibling: {
+    label: "Also from 13Stack",
+    name: "Skedvio",
+    line: "Scheduling that stays conflict-free.",
+    href: "/products/skedvio",
   },
 };
 
@@ -1204,7 +1696,7 @@ export const aboutPage = {
   headingFrom: "Founders",
   headingTo: "Execution",
   subtitle:
-    "A founder-led studio based in Lahore, Pakistan. Small team, direct ownership, real delivery.",
+    "A founder-led studio. Small team, direct ownership, real delivery.",
   heroCards: [
     {
       id: "ceo",
@@ -1228,11 +1720,16 @@ export const aboutPage = {
       id: "ship",
       eyebrow: "Delivery",
       title: "Built to run",
-      line: "Production systems for clients and our own products, not prototypes that stall.",
+      line: copyFor(
+        "Production systems for our own products, not prototypes that stall.",
+        "Production systems for clients and our own products, not prototypes that stall.",
+      ),
     },
   ],
-  intro:
-    "13Stack is an AI studio building production systems, not prototypes. We design, build, and ship full-stack and AI-native products for clients, alongside our own products like Skedvio and elim-mcp. Based in Lahore, Pakistan, working with teams globally.",
+  intro: copyFor(
+    "13Stack is an AI product studio. We design, build, and ship full-stack and AI-native products like Skedvio, elim-mcp, and Fylmkit — working with teams wherever they are.",
+    "13Stack is an AI studio building production systems, not prototypes. We design, build, and ship full-stack and AI-native products for clients, alongside our own products like Skedvio, elim-mcp, and Fylmkit — working with teams wherever they are.",
+  ),
   overview: {
     eyebrow: "Studio",
     title: "Who we are",
@@ -1261,13 +1758,19 @@ export const aboutPage = {
         name: "Zakria Hameed",
         title: "Head of Engineering",
         email: siteEmails.engineering,
-        bio: "Drives delivery end to end: refining development workflows, following best practices, and shipping on time without losing sight of what the client actually needs. Takes ownership of outcomes, not just tasks.",
+        bio: copyFor(
+          "Drives delivery end to end: refining development workflows, following best practices, and shipping on time without losing sight of what users actually need. Takes ownership of outcomes, not just tasks.",
+          "Drives delivery end to end: refining development workflows, following best practices, and shipping on time without losing sight of what the client actually needs. Takes ownership of outcomes, not just tasks.",
+        ),
       },
     ],
   },
   location: {
-    title: "Based in Lahore. Built for anywhere.",
-    body: "We are a small, hands-on team. Direct communication, no account managers, no layers between you and the people building your product. Based in Lahore, Pakistan, working with clients across time zones.",
+    title: "Small team. Built for anywhere.",
+    body: copyFor(
+      "We are a small, hands-on team. Direct communication, no account managers, no layers between you and the people building the product. Remote-first, working with users across time zones.",
+      "We are a small, hands-on team. Direct communication, no account managers, no layers between you and the people building your product. Remote-first, working with clients across time zones.",
+    ),
   },
   whyUs: {
     eyebrow: "Why us",
@@ -1289,7 +1792,10 @@ export const aboutPage = {
       },
       {
         title: "Same standard for our products",
-        body: "Skedvio and elim-mcp run in public. That pressure keeps client work honest.",
+        body: copyFor(
+          "Skedvio and elim-mcp run in public. Fylmkit is next. That pressure keeps the product honest.",
+          "Skedvio and elim-mcp run in public. Fylmkit is next. That pressure keeps client work honest.",
+        ),
       },
     ],
   },
@@ -1344,8 +1850,10 @@ export const aboutPage = {
   customerVoice: {
     eyebrow: "Our products",
     title: "Shaped with the people who use them",
-    subtitle:
+    subtitle: copyFor(
+      "We listen, ship against real need, and keep the roadmap honest.",
       "We build our own products the same way we build for clients. We listen, ship against real need, and keep the roadmap honest.",
+    ),
     pillars: [
       {
         title: "We hear our users",
@@ -1357,7 +1865,10 @@ export const aboutPage = {
       },
       {
         title: "Delivered to the customer",
-        body: "Client work and product work both follow the brief: what was promised, what was needed, and what ships on time.",
+        body: copyFor(
+          "Product work follows the brief: what was promised, what was needed, and what ships on time.",
+          "Client work and product work both follow the brief: what was promised, what was needed, and what ships on time.",
+        ),
       },
     ],
     reviewsTitle: "What users say",
@@ -1379,23 +1890,32 @@ export const aboutPage = {
           "They shipped what we needed, not a pile of extras. Communication stayed direct and the system was ready for real users.",
         author: "Founder",
         context: "Client delivery",
+        audience: "services" as const,
       },
     ],
   },
 };
 
 export const contactPage = {
-  eyebrow: "Consultation",
-  title: "Tell us what you are building",
-  subtitle:
+  eyebrow: copyFor("Contact", "Consultation"),
+  title: copyFor(
+    "Talk to us about our products",
+    "Tell us what you are building",
+  ),
+  subtitle: copyFor(
+    "Questions about Skedvio, elim-mcp, Fylmkit, or 13Stack. We will reply — usually within one business day.",
     "Share the problem, the constraints, and where you want to land. We will reply with clear next steps — usually within one business day.",
+  ),
   emailLabel: "Email",
   responseLabel: "Response time",
   responseValue: "Within one business day",
   points: [
     {
-      label: "Discovery first",
-      detail: "Goals, constraints, and the fastest path to ship.",
+      label: copyFor("Product first", "Discovery first"),
+      detail: copyFor(
+        "Ask about a product, a partnership, or what we are shipping next.",
+        "Goals, constraints, and the fastest path to ship.",
+      ),
     },
     {
       label: "Real reply",
@@ -1403,7 +1923,10 @@ export const contactPage = {
     },
     {
       label: "Clear next steps",
-      detail: "Scope, approach, or a short call if that helps more.",
+      detail: copyFor(
+        "A product answer, a pointer, or a short call if that helps more.",
+        "Scope, approach, or a short call if that helps more.",
+      ),
     },
   ],
   form: {
@@ -1411,10 +1934,12 @@ export const contactPage = {
     emailLabel: "Work email",
     companyLabel: "Company",
     companyOptional: "Optional",
-    messageLabel: "What are you building?",
-    messagePlaceholder:
+    messageLabel: copyFor("What's on your mind?", "What are you building?"),
+    messagePlaceholder: copyFor(
+      "A product question, partnership idea, or anything else…",
       "Product idea, AI system, automation need, timeline, and anything already decided…",
-    submitLabel: "Book a consultation",
+    ),
+    submitLabel: copyFor("Send message", "Book a consultation"),
     submittingLabel: "Sending…",
     successMessage:
       "Thanks — we received your note and will get back to you soon.",
@@ -1437,15 +1962,22 @@ export const newsletter = {
 };
 
 export const footer = {
-  tagline: "AI systems and products, engineered end to end.",
-  location: "Lahore, Pakistan",
+  tagline: copyFor(
+    "AI products, engineered end to end.",
+    "AI systems and products, engineered end to end.",
+  ),
+  location: "Remote-first · shipping worldwide",
   columns: [
     {
       title: "Company",
       links: [
         { label: "About", href: "/about" },
-        { label: "Services", href: "/services" },
-        { label: "Work", href: "/work" },
+        ...(siteFlags.showServices
+          ? [
+              { label: "Services", href: "/services" },
+              { label: "Work", href: "/work" },
+            ]
+          : []),
         { label: "Build log", href: "/blog" },
         { label: "Contact", href: "/contact" },
       ],
@@ -1453,13 +1985,21 @@ export const footer = {
     {
       title: "Products",
       links: [
-        { label: "Skedvio", href: "https://skedvio.com", external: true },
+        { label: "Skedvio", href: "/products/skedvio" },
+        { label: "elim-mcp", href: "/products/elim-mcp" },
+        { label: "Fylmkit", href: "/products/fylmkit" },
+        { label: "All products", href: "/products" },
+        { label: "skedvio.com", href: "https://skedvio.com", external: true },
         {
-          label: "elim-mcp",
+          label: "elim-mcp on npm",
           href: "https://www.npmjs.com/package/elim-mcp",
           external: true,
         },
-        { label: "All products", href: "/products" },
+        {
+          label: "fylmkit.com",
+          href: "https://fylmkit.com",
+          external: true,
+        },
       ],
     },
     {
@@ -1467,7 +2007,10 @@ export const footer = {
       links: [
         { label: siteEmails.ceo, href: `mailto:${siteEmails.ceo}` },
         { label: siteEmails.cto, href: `mailto:${siteEmails.cto}` },
-        { label: siteEmails.engineering, href: `mailto:${siteEmails.engineering}` },
+        {
+          label: siteEmails.engineering,
+          href: `mailto:${siteEmails.engineering}`,
+        },
         { label: siteEmails.sales, href: `mailto:${siteEmails.sales}` },
         { label: siteEmails.support, href: `mailto:${siteEmails.support}` },
       ],

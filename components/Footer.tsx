@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
-import { footer, newsletter } from "@/lib/mock-data";
+import { isServiceHref, siteFlags } from "@/lib/flags";
+import { footer, navigation, newsletter } from "@/lib/mock-data";
 import { siteConfig } from "@/lib/site";
 import { NewsletterForm } from "@/components/NewsletterForm";
 import { RevealGroup, RevealItem } from "@/components/ui/Reveal";
@@ -75,15 +76,20 @@ export function Footer() {
                   {column.title}
                 </h3>
                 <ul className="mt-4 flex flex-col gap-3">
-                  {column.links.map((link) => (
-                    <li key={`${column.title}-${link.label}`}>
-                      <FooterLink
-                        label={link.label}
-                        href={link.href}
-                        external={"external" in link ? link.external : false}
-                      />
-                    </li>
-                  ))}
+                  {column.links
+                    .filter(
+                      (link) =>
+                        siteFlags.showServices || !isServiceHref(link.href),
+                    )
+                    .map((link) => (
+                      <li key={`${column.title}-${link.label}`}>
+                        <FooterLink
+                          label={link.label}
+                          href={link.href}
+                          external={"external" in link ? link.external : false}
+                        />
+                      </li>
+                    ))}
                 </ul>
               </div>
             ))}
@@ -109,7 +115,7 @@ export function Footer() {
               href="/contact"
               className="text-xs font-medium text-text-03 transition-colors hover:text-white"
             >
-              Book a consultation
+              {navigation.cta}
             </Link>
           </div>
         </RevealItem>

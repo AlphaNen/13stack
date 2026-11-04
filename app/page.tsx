@@ -6,15 +6,16 @@ import { WorkPreview } from "@/components/sections/WorkPreview";
 import { AboutBrief } from "@/components/sections/AboutBrief";
 import { Blog } from "@/components/sections/Blog";
 import { CTA } from "@/components/sections/CTA";
+import { siteFlags } from "@/lib/flags";
 
 export default function Home() {
   return (
     <main className="flex flex-1 flex-col">
       <Hero />
       <TrustedCompanies />
-      <HowWeBuild />
+      {siteFlags.showServices ? <HowWeBuild /> : null}
       <ProductsPreview />
-      <WorkPreview />
+      {siteFlags.showServices ? <WorkPreview /> : null}
       <AboutBrief />
       <Blog />
       <CTA />

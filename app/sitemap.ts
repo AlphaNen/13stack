@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
-import { blogPosts } from "@/lib/mock-data";
+import { siteFlags } from "@/lib/flags";
+import { getVisibleBlogPosts } from "@/lib/mock-data";
 import { getSiteUrl } from "@/lib/site";
 
 const staticRoutes: {
@@ -11,9 +12,20 @@ const staticRoutes: {
 }[] = [
   { path: "", changeFrequency: "weekly", priority: 1 },
   { path: "/about", changeFrequency: "monthly", priority: 0.7 },
-  { path: "/services", changeFrequency: "monthly", priority: 0.7 },
-  { path: "/work", changeFrequency: "monthly", priority: 0.7 },
+  ...(siteFlags.showServices
+    ? [
+        {
+          path: "/services",
+          changeFrequency: "monthly" as const,
+          priority: 0.7,
+        },
+        { path: "/work", changeFrequency: "monthly" as const, priority: 0.7 },
+      ]
+    : []),
   { path: "/products", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/products/skedvio", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/products/elim-mcp", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/products/fylmkit", changeFrequency: "monthly", priority: 0.8 },
   { path: "/blog", changeFrequency: "weekly", priority: 0.7 },
   { path: "/contact", changeFrequency: "monthly", priority: 0.7 },
 ];
@@ -29,7 +41,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: route.changeFrequency,
       priority: route.priority,
     })),
-    ...blogPosts.map((post) => ({
+    ...getVisibleBlogPosts().map((post) => ({
       url: `${siteUrl}/blog/${post.slug}`,
       lastModified: new Date(post.date),
       changeFrequency: "monthly" as const,

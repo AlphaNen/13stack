@@ -61,6 +61,11 @@ export function ProductsPreview() {
                     <h3 className="text-lg font-semibold tracking-tight text-white sm:text-xl">
                       {item.name}
                     </h3>
+                    {"badge" in item && item.badge ? (
+                      <span className="rounded-full border border-primary/25 bg-primary/10 px-2 py-0.5 text-[10px] font-medium tracking-wide text-primary uppercase">
+                        {item.badge}
+                      </span>
+                    ) : null}
                     <span className="text-xs tracking-wide text-text-03">
                       {item.meta}
                     </span>

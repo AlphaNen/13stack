@@ -117,7 +117,7 @@ export async function submitConsultation(
         return {
           ok: true,
           warning:
-            "Your consultation was saved, but newsletter signup failed. You can retry from the footer.",
+            "Your message was saved, but newsletter signup failed. You can retry from the footer.",
         };
       }
     }
@@ -128,7 +128,7 @@ export async function submitConsultation(
     return {
       ok: false,
       error:
-        "Consultation form is not configured yet. Check Supabase env vars.",
+        "Contact form is not configured yet. Check Supabase env vars.",
     };
   }
 }
