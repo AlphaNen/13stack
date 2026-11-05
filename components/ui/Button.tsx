@@ -23,17 +23,25 @@ export function Button({
   className?: string;
   children: ReactNode;
 }) {
-  const fullWidth = /\bw-full\b/.test(className);
+  const widthClasses = className
+    .split(/\s+/)
+    .filter((token) => /^(?:sm:|md:|lg:|xl:|2xl:)?w-/.test(token))
+    .join(" ");
+  const visualClasses = className
+    .split(/\s+/)
+    .filter((token) => token && !/^(?:sm:|md:|lg:|xl:|2xl:)?w-/.test(token))
+    .join(" ");
+  const wrapperWidth = widthClasses || "inline-block";
 
   return (
     <motion.div
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.97 }}
-      className={fullWidth ? "block w-full" : "inline-block"}
+      className={wrapperWidth.includes("w-full") ? wrapperWidth : `inline-block ${wrapperWidth}`.trim()}
     >
       <Link
         href={href}
-        className={`inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-medium tracking-tight transition-colors hover:brightness-110 ${variantClasses[variant]} ${className}`}
+        className={`inline-flex w-full items-center justify-center whitespace-nowrap rounded-full px-6 py-3 text-sm font-medium tracking-tight transition-colors hover:brightness-110 ${variantClasses[variant]} ${visualClasses}`}
       >
         {children}
       </Link>

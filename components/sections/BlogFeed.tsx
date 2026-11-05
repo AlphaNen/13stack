@@ -2,8 +2,13 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { blogPage, blogPosts, type BlogPostKind } from "@/lib/mock-data";
+import {
+  blogPage,
+  getVisibleBlogPosts,
+  type BlogPostKind,
+} from "@/lib/mock-data";
 import { RevealGroup, RevealItem } from "@/components/ui/Reveal";
 
 type FilterId = "all" | BlogPostKind;
@@ -17,51 +22,74 @@ export function BlogFeed() {
   const [filter, setFilter] = useState<FilterId>("all");
 
   const posts = useMemo(() => {
-    if (filter === "all") return blogPosts;
-    return blogPosts.filter((post) => post.kind === filter);
+    const visible = getVisibleBlogPosts();
+    if (filter === "all") return visible;
+    return visible.filter((post) => post.kind === filter);
   }, [filter]);
 
   return (
     <section className="px-gutter pb-20 sm:pb-24">
-      <RevealGroup className="w-full items-start gap-8 sm:gap-10">
-        <RevealItem className="flex w-full flex-wrap gap-2 border-b border-white/10 pb-4">
-          {blogPage.filters.map((item) => {
-            const active = filter === item.id;
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => setFilter(item.id)}
-                className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                  active
-                    ? "bg-primary text-white"
-                    : "border border-white/10 text-text-03 hover:border-white/25 hover:text-white"
-                }`}
-              >
-                {item.label}
-              </button>
-            );
-          })}
-        </RevealItem>
-
-        {posts.length === 0 ? (
-          <RevealItem className="w-full max-w-lg py-10">
-            <h2 className="text-xl font-semibold tracking-tight">
-              {blogPage.emptyTitle}
-            </h2>
-            <p className="mt-2 text-sm leading-relaxed text-text-03 sm:text-base">
-              {blogPage.emptyBody}
-            </p>
-          </RevealItem>
-        ) : (
-          <div className="flex w-full flex-col border-t border-white/10">
-            {posts.map((post, i) => (
-              <RevealItem key={post.slug} className="w-full">
-                <Link
-                  href={`/blog/${post.slug}`}
-                  className={`group grid w-full grid-cols-1 gap-3 border-b border-white/10 py-6 transition-colors sm:grid-cols-[7.5rem_minmax(0,1fr)_auto] sm:items-start sm:gap-6 sm:py-7 ${
-                    i === 0 ? "pt-6" : ""
+      <RevealGroup className="w-full items-start gap-0">
+        <RevealItem className="w-full border-y border-white/10">
+          <div
+            role="tablist"
+            aria-label="Filter build log posts"
+            className="flex w-full items-stretch gap-1 overflow-x-auto sm:gap-2"
+          >
+            {blogPage.filters.map((item) => {
+              const active = filter === item.id;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => setFilter(item.id)}
+                  className={`relative shrink-0 px-3.5 py-3.5 text-sm font-medium tracking-tight transition-colors sm:px-4 ${
+                    active
+                      ? "text-white"
+                      : "text-text-03 hover:text-white"
                   }`}
+                >
+                  {item.label}
+                  <span
+                    aria-hidden
+                    className={`pointer-events-none absolute inset-x-3 -bottom-px h-0.5 rounded-full transition-colors sm:inset-x-3.5 ${
+                      active ? "bg-primary" : "bg-transparent"
+                    }`}
+                  />
+                </button>
+              );
+            })}
+          </div>
+        </RevealItem>
+      </RevealGroup>
+
+      <div className="mx-auto w-full max-w-[var(--page-max-width)]">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={filter}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="flex w-full flex-col"
+          >
+            {posts.length === 0 ? (
+              <div className="w-full max-w-lg py-10">
+                <h2 className="text-xl font-semibold tracking-tight">
+                  {blogPage.emptyTitle}
+                </h2>
+                <p className="mt-2 text-sm leading-relaxed text-text-03 sm:text-base">
+                  {blogPage.emptyBody}
+                </p>
+              </div>
+            ) : (
+              posts.map((post) => (
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="group grid w-full grid-cols-1 gap-3 border-b border-white/10 py-6 transition-colors sm:grid-cols-[7.5rem_minmax(0,1fr)_auto] sm:items-start sm:gap-6 sm:py-7"
                 >
                   <div className="flex flex-wrap items-center gap-x-3 gap-y-1 sm:flex-col sm:items-start sm:gap-2">
                     <span className="text-[11px] font-medium tracking-wide text-primary uppercase">
@@ -92,11 +120,11 @@ export function BlogFeed() {
                     className="hidden shrink-0 text-white/30 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary sm:mt-1 sm:block"
                   />
                 </Link>
-              </RevealItem>
-            ))}
-          </div>
-        )}
-      </RevealGroup>
+              ))
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </div>
     </section>
   );
 }
