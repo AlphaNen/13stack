@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { BlogPostArticle } from "@/components/sections/BlogPostArticle";
 import { CTA } from "@/components/sections/CTA";
-import { blogPosts } from "@/lib/mock-data";
+import { getVisibleBlogPosts } from "@/lib/mock-data";
 
 export function generateStaticParams() {
-  return blogPosts.map((post) => ({ slug: post.slug }));
+  return getVisibleBlogPosts().map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({
@@ -14,7 +14,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = blogPosts.find((item) => item.slug === slug);
+  const post = getVisibleBlogPosts().find((item) => item.slug === slug);
   if (!post) {
     return { title: "Post" };
   }
@@ -30,7 +30,7 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = blogPosts.find((item) => item.slug === slug);
+  const post = getVisibleBlogPosts().find((item) => item.slug === slug);
   if (!post) notFound();
 
   return (

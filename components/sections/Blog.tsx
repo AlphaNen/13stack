@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { blogPosts, homeBlog } from "@/lib/mock-data";
+import { getVisibleBlogPosts, homeBlog } from "@/lib/mock-data";
 import { RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import { TextLink } from "@/components/ui/TextLink";
 
@@ -12,7 +12,7 @@ const kindLabel = {
 } as const;
 
 export function Blog() {
-  const posts = blogPosts.slice(0, homeBlog.previewCount);
+  const posts = getVisibleBlogPosts().slice(0, homeBlog.previewCount);
 
   return (
     <section className="px-gutter py-16 sm:py-20">
