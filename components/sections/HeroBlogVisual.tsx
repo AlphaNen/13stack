@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { blogPage } from "@/lib/mock-data";
+import { ProductMark } from "@/components/ui/ProductMark";
 
 export function HeroBlogVisual() {
   const { label, items } = blogPage.heroProducts;
@@ -32,12 +33,11 @@ export function HeroBlogVisual() {
                 href={item.href}
                 className="group flex items-center gap-3.5 px-4 py-3.5 transition-colors hover:bg-white/[0.03] sm:gap-4 sm:px-5 sm:py-4"
               >
-                <span
-                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] font-mono text-sm font-semibold text-primary transition-colors group-hover:border-primary/35 group-hover:bg-primary/10"
-                  aria-hidden
-                >
-                  {item.mark}
-                </span>
+                <ProductMark
+                  id={item.id}
+                  size="sm"
+                  className="transition-colors group-hover:border-primary/35"
+                />
 
                 <span className="min-w-0 flex-1">
                   <span className="flex flex-wrap items-baseline gap-x-2.5 gap-y-0.5">

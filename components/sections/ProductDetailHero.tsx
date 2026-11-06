@@ -3,13 +3,16 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { HeroRule } from "@/components/ui/HeroRule";
+import { ProductMark } from "@/components/ui/ProductMark";
 import { fadeUp, staggerContainer } from "@/lib/motion";
+import type { ProductLogoId } from "@/lib/product-logos";
 
 type Cta = { label: string; href: string };
 
 export function ProductDetailHero({
   eyebrow,
   badge,
+  logoId,
   title,
   subtitle,
   primaryCta,
@@ -17,6 +20,7 @@ export function ProductDetailHero({
 }: {
   eyebrow: string;
   badge: string;
+  logoId?: ProductLogoId;
   title: string;
   subtitle: string;
   primaryCta: Cta;
@@ -39,12 +43,15 @@ export function ProductDetailHero({
           variants={fadeUp}
           className="flex flex-wrap items-center gap-3"
         >
-          <p className="text-xs font-medium tracking-wide text-primary uppercase">
-            {eyebrow}
-          </p>
-          <span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-[11px] font-medium tracking-wide text-primary">
-            {badge}
-          </span>
+          {logoId ? <ProductMark id={logoId} size="lg" /> : null}
+          <div className="flex flex-wrap items-center gap-3">
+            <p className="text-xs font-medium tracking-wide text-primary uppercase">
+              {eyebrow}
+            </p>
+            <span className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-[11px] font-medium tracking-wide text-primary">
+              {badge}
+            </span>
+          </div>
         </motion.div>
 
         <motion.h1

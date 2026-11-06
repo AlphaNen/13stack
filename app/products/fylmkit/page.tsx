@@ -20,6 +20,7 @@ export default function FylmkitProductPage() {
       <ProductDetailHero
         eyebrow={page.eyebrow}
         badge={page.badge}
+        logoId="fylmkit"
         title={page.title}
         subtitle={page.subtitle}
         primaryCta={page.primaryCta}
@@ -43,6 +44,7 @@ export default function FylmkitProductPage() {
         name={page.sibling.name}
         line={page.sibling.line}
         href={page.sibling.href}
+        logoId={page.sibling.logoId}
       />
       <CTA />
     </main>

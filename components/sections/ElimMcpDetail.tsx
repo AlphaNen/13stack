@@ -1,9 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Layers2 } from "lucide-react";
 import { productsPage } from "@/lib/mock-data";
 import { Button } from "@/components/ui/Button";
+import { ProductMark } from "@/components/ui/ProductMark";
 import { viewportOnce } from "@/lib/motion";
 
 const toneClass: Record<string, string> = {
@@ -37,9 +37,7 @@ export function ElimMcpDetail() {
               aria-hidden
             />
             <div className="flex flex-wrap items-center gap-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-primary/30 bg-primary/15 text-primary shadow-[0_0_18px_rgba(0,145,255,0.35)] sm:h-11 sm:w-11">
-                <Layers2 size={20} />
-              </span>
+              <ProductMark id="elim-mcp" size="md" />
               <h2 className="text-[clamp(1.55rem,4vw+0.7rem,2.75rem)] font-medium tracking-tight leading-[1.15]">
                 {elim.name}
               </h2>

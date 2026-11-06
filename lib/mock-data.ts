@@ -174,7 +174,6 @@ export const homeProducts = {
   items: [
     {
       id: "skedvio",
-      mark: "S",
       name: "Skedvio",
       meta: "Live · skedvio.com",
       line: "How we book our own calls.",
@@ -182,7 +181,6 @@ export const homeProducts = {
     },
     {
       id: "elim-mcp",
-      mark: "e",
       name: "elim-mcp",
       meta: "Open source · npm",
       line: "How our agents keep context.",
@@ -190,7 +188,6 @@ export const homeProducts = {
     },
     {
       id: "fylmkit",
-      mark: "F",
       name: "Fylmkit",
       badge: "Coming soon",
       meta: "fylmkit.com",
@@ -453,7 +450,7 @@ export function getVisibleBlogPosts() {
   );
 }
 
-export const blogPosts: BlogPost[] = [
+const blogPosts: BlogPost[] = [
   {
     slug: "skedvio-live-booking",
     kind: "news",
@@ -820,7 +817,6 @@ export const blogPage = {
     items: [
       {
         id: "skedvio",
-        mark: "S",
         name: "Skedvio",
         status: "Live",
         line: "Scheduling intelligence",
@@ -828,7 +824,6 @@ export const blogPage = {
       },
       {
         id: "elim-mcp",
-        mark: "e",
         name: "elim-mcp",
         status: "Open source",
         line: "Agent memory on npm",
@@ -836,7 +831,6 @@ export const blogPage = {
       },
       {
         id: "fylmkit",
-        mark: "F",
         name: "Fylmkit",
         status: "Soon",
         line: "AI video on brand",
@@ -1118,7 +1112,6 @@ export const productsPage = {
   catalog: [
     {
       id: "skedvio",
-      mark: "S",
       name: "Skedvio",
       badge: "Live product",
       meta: "skedvio.com",
@@ -1135,7 +1128,6 @@ export const productsPage = {
     },
     {
       id: "elim-mcp",
-      mark: "e",
       name: "elim-mcp",
       badge: "Open source · npm",
       meta: "elim-mcp on npm",
@@ -1152,7 +1144,6 @@ export const productsPage = {
     },
     {
       id: "fylmkit",
-      mark: "F",
       name: "Fylmkit",
       badge: "Coming soon",
       meta: "fylmkit.com",
@@ -1377,6 +1368,7 @@ export const skedvioProductPage = {
     name: "Fylmkit",
     line: "AI video that stays on brand. Coming soon.",
     href: "/products/fylmkit",
+    logoId: "fylmkit" as const,
   },
 };
 
@@ -1478,6 +1470,7 @@ export const elimMcpProductPage = {
     name: "Fylmkit",
     line: "AI video that stays on brand. Coming soon.",
     href: "/products/fylmkit",
+    logoId: "fylmkit" as const,
   },
 };
 
@@ -1571,6 +1564,7 @@ export const fylmkitProductPage = {
     name: "Skedvio",
     line: "Scheduling that stays conflict-free.",
     href: "/products/skedvio",
+    logoId: "skedvio" as const,
   },
 };
 

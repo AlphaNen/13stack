@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { getVisibleBlogPosts, productsPage } from "@/lib/mock-data";
 import { RevealGroup, RevealItem } from "@/components/ui/Reveal";
+import { ProductMark } from "@/components/ui/ProductMark";
 import { TextLink } from "@/components/ui/TextLink";
 
 const kindLabel = {
@@ -53,12 +54,7 @@ export function ProductsBody() {
                 <RevealItem key={item.id} className="w-full">
                   <div className="flex h-full flex-col gap-5 rounded-2xl border border-white/10 bg-card-bg p-5 sm:p-6">
                     <div className="flex items-start justify-between gap-4">
-                      <span
-                        className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] font-mono text-base font-semibold text-primary"
-                        aria-hidden
-                      >
-                        {item.mark}
-                      </span>
+                      <ProductMark id={item.id} size="md" />
                       <span className="rounded-full border border-primary/25 bg-primary/10 px-2.5 py-0.5 text-[11px] font-medium text-primary">
                         {item.badge}
                       </span>

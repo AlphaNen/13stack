@@ -21,6 +21,7 @@ export default function SkedvioProductPage() {
       <ProductDetailHero
         eyebrow={page.eyebrow}
         badge={page.badge}
+        logoId="skedvio"
         title={page.title}
         subtitle={page.subtitle}
         primaryCta={page.primaryCta}
@@ -51,6 +52,7 @@ export default function SkedvioProductPage() {
         name={page.sibling.name}
         line={page.sibling.line}
         href={page.sibling.href}
+        logoId={page.sibling.logoId}
       />
       <CTA />
     </main>

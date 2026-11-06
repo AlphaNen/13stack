@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { homeProducts } from "@/lib/mock-data";
 import { RevealGroup, RevealItem } from "@/components/ui/Reveal";
+import { ProductMark } from "@/components/ui/ProductMark";
 import { TextLink } from "@/components/ui/TextLink";
 
 export function ProductsPreview() {
@@ -49,12 +50,11 @@ export function ProductsPreview() {
                 href={item.href}
                 className="group flex w-full items-start gap-4 border-b border-white/10 py-5 transition-colors sm:gap-5 sm:py-7"
               >
-                <span
-                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] font-mono text-sm font-semibold text-primary transition-colors group-hover:border-primary/40 group-hover:bg-primary/10 sm:h-12 sm:w-12 sm:text-base"
-                  aria-hidden
-                >
-                  {item.mark}
-                </span>
+                <ProductMark
+                  id={item.id}
+                  size="md"
+                  className="transition-colors group-hover:border-primary/40"
+                />
 
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">

@@ -1,17 +1,21 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { RevealGroup, RevealItem } from "@/components/ui/Reveal";
+import { ProductMark } from "@/components/ui/ProductMark";
+import type { ProductLogoId } from "@/lib/product-logos";
 
 export function ProductSibling({
   label,
   name,
   line,
   href,
+  logoId,
 }: {
   label: string;
   name: string;
   line: string;
   href: string;
+  logoId?: ProductLogoId;
 }) {
   return (
     <section className="px-gutter pb-4 pt-2 sm:pb-6 sm:pt-4">
@@ -21,16 +25,19 @@ export function ProductSibling({
             href={href}
             className="group flex items-start justify-between gap-4 border-t border-white/10 py-6 transition-colors sm:py-8"
           >
-            <div className="min-w-0">
-              <p className="text-xs font-medium tracking-wide text-text-03 uppercase">
-                {label}
-              </p>
-              <h2 className="mt-2 text-xl font-semibold tracking-tight text-white transition-colors group-hover:text-primary sm:text-2xl">
-                {name}
-              </h2>
-              <p className="mt-1.5 text-sm leading-relaxed text-text-03 sm:text-base">
-                {line}
-              </p>
+            <div className="flex min-w-0 items-start gap-4">
+              {logoId ? <ProductMark id={logoId} size="md" /> : null}
+              <div className="min-w-0">
+                <p className="text-xs font-medium tracking-wide text-text-03 uppercase">
+                  {label}
+                </p>
+                <h2 className="mt-2 text-xl font-semibold tracking-tight text-white transition-colors group-hover:text-primary sm:text-2xl">
+                  {name}
+                </h2>
+                <p className="mt-1.5 text-sm leading-relaxed text-text-03 sm:text-base">
+                  {line}
+                </p>
+              </div>
             </div>
             <ArrowUpRight
               size={20}
