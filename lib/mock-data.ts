@@ -452,6 +452,231 @@ export function getVisibleBlogPosts() {
 
 const blogPosts: BlogPost[] = [
   {
+    slug: "three-products-one-studio",
+    kind: "news",
+    title: "Three products, one studio",
+    excerpt:
+      "Skedvio, elim-mcp, and Fylmkit now share the 13Stack products hub — live tools, open source, and what is next, in one place.",
+    date: "2026-11-05",
+    dateLabel: "Nov 5, 2026",
+    author: "13Stack",
+    readingTime: "2 min",
+    announcement: {
+      badge: "Studio update",
+      title: "Products hub refreshed · Fylmkit listed as coming soon",
+      text: "The studio site now carries dedicated pages for Skedvio, elim-mcp, and Fylmkit — with brand marks, waitlist, and Product Hunt where they belong.",
+    },
+    body: [
+      "We have been shipping products in public for months. The studio site needed to catch up — not as a brochure, but as the place that points at what we actually run.",
+      "Skedvio stays the live scheduling product, with a Product Hunt link for the launch. elim-mcp stays the open-source memory layer on npm. Fylmkit joins the lineup as coming soon, with the waitlist and a full walkthrough of brand kits and short-form version one.",
+      "If you only follow one surface, use the products hub. Build log posts will keep landing here as each tool moves.",
+    ],
+    links: [
+      { label: "Browse products", href: "/products" },
+      { label: "Fylmkit waitlist", href: "https://fylmkit.com", external: true },
+      {
+        label: "Skedvio on Product Hunt",
+        href: "https://www.producthunt.com/products/skedvio-scheduling-intelligence/launches/skedvio?utm_source=other&utm_medium=social",
+        external: true,
+      },
+    ],
+  },
+  {
+    slug: "fylmkit-waitlist-open",
+    kind: "news",
+    title: "Fylmkit waitlist is open",
+    excerpt:
+      "Our AI video tool for brand, product, and marketing is on the waitlist. Set the look once, give it something to say, and keep shipping on-brand short form.",
+    date: "2026-10-28",
+    dateLabel: "Oct 28, 2026",
+    author: "13Stack",
+    readingTime: "2 min",
+    announcement: {
+      badge: "Coming soon",
+      title: "fylmkit.com · waitlist open for early access",
+      text: "Join the waitlist for early access and founding member pricing. Version one is short-form marketing video that already looks and sounds like your brand.",
+    },
+    body: [
+      "Most brands need to post constantly and have nobody to shoot or edit. Generic AI video fills a feed. It rarely looks like the brand.",
+      "Fylmkit is the tool we are building for that gap. You set colours, voice, and rules once. Then you give it a product note, a campaign line, or a changelog entry. It writes the script, plans scenes, generates voiceover, and times captions — finished clips that already look like you.",
+      "The site is live at fylmkit.com. Join the waitlist if you want early access. The product page walks through brand kits, scene types, and how version one ships short form for Reels, TikTok, Shorts, and LinkedIn.",
+    ],
+    links: [
+      { label: "Join the waitlist", href: "https://fylmkit.com", external: true },
+      { label: "Fylmkit product page", href: "/products/fylmkit" },
+    ],
+  },
+  {
+    slug: "on-brand-video-without-a-video-team",
+    kind: "article",
+    title: "On-brand video without a video team",
+    excerpt:
+      "Constant short form is the job. A generic AI clip is not the same as a brand asset. Here is the bar we set for Fylmkit.",
+    date: "2026-10-21",
+    dateLabel: "Oct 21, 2026",
+    author: "13Stack",
+    readingTime: "7 min",
+    brief: [
+      "Posting cadence dies when every clip needs an editor or a freelancer.",
+      "Stock energy and one-size templates erase brand voice on small screens.",
+      "Fylmkit starts from brand rules, then generates scenes brands actually use.",
+    ],
+    sections: [
+      {
+        id: "the-job",
+        title: "The job is cadence, not a one-off hero film",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Founders, ecommerce teams, agencies, educators, and local businesses do not need a festival cut. They need a steady stream of short clips that still look like them — product drops, hooks, stats, feature explainers, updates.",
+          },
+          {
+            type: "paragraph",
+            text: "Hiring a video team for that volume is expensive. Outsourcing every reel is slow. Opening a generic AI video tool often means the first draft looks like everyone else's feed.",
+          },
+          {
+            type: "note",
+            title: "What we kept hearing",
+            text: "We can write the caption. We cannot spend three evenings in an editor for every post. And we will not ship a clip that does not sound like us.",
+          },
+        ],
+      },
+      {
+        id: "where-tools-fail",
+        title: "Where most AI video tools drop the brand",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "A tool that only writes a script still leaves scene design, voice, captions, and format work on the table. A tool that only renders stock footage still invents a look you never approved.",
+          },
+          {
+            type: "list",
+            items: [
+              "No lasting brand profile — colours, fonts, tone, and banned phrases reset every project",
+              "One template for clothing and SaaS alike — wrong pacing, wrong density, wrong visuals",
+              "Captions and voice treated as afterthoughts instead of part of the brand surface",
+              "Aspect ratios cropped from each other instead of composed for each channel",
+            ],
+          },
+          {
+            type: "paragraph",
+            text: "That is why “AI video” as a noun is the wrong promise. The product has to be an AI video tool for your brand, your products, and your marketing — not a novelty render.",
+          },
+        ],
+      },
+      {
+        id: "version-one-bar",
+        title: "The bar for Fylmkit version one",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Version one is short form first: Reels, TikTok, Shorts, LinkedIn, and X. Up to about a minute. Brand profiles once. Script in your voice. Designed scenes — hooks, statements and stats, product shots from your photography, code and diagrams for technical brands.",
+          },
+          {
+            type: "code",
+            language: "ts",
+            filename: "brand-profile.ts",
+            code: `type BrandProfile = {
+  colours: string[];
+  fonts: string[];
+  logo: string;
+  voice: string;
+  bannedPhrases: string[];
+};
+
+// Set once. Every marketing video follows it.
+const brand: BrandProfile = {
+  colours: ["#0B0B0C", "#FF6B2C"],
+  fonts: ["Space Grotesk", "Poppins"],
+  logo: "mark.svg",
+  voice: "plain, direct, no hype",
+  bannedPhrases: ["game-changer", "synergy"],
+};`,
+          },
+          {
+            type: "list",
+            items: [
+              "AI through setup, writing, scenes, timing, captions, and checks — not only the first script pass",
+              "Cuts on sentence boundaries so the piece does not feel machine-timed",
+              "Quality checks for layout, contrast, timing, and brand rules before you see the file",
+              "You download and post. Posting stays in your hands in version one",
+            ],
+          },
+        ],
+      },
+      {
+        id: "what-next",
+        title: "What we are shipping next",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "The waitlist is open while we finish the pipeline that makes brand fidelity boring and reliable. Longer YouTube-style video is on the roadmap after short form holds up under real brand kits.",
+          },
+          {
+            type: "note",
+            title: "Follow along",
+            text: "Join the waitlist on fylmkit.com, read the product walkthrough, and watch this build log for shipping notes as version one lands.",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "fylmkit-next-in-the-stack",
+    kind: "news",
+    title: "Next in the stack: Fylmkit",
+    excerpt:
+      "After scheduling and agent memory, we are building AI video that stays on brand. Short form first. Waitlist next.",
+    date: "2026-09-17",
+    dateLabel: "Sep 17, 2026",
+    author: "13Stack",
+    readingTime: "2 min",
+    announcement: {
+      badge: "In development",
+      title: "Fylmkit · brand kits + short-form version one",
+      text: "We are building the brand profile, scene planner, and render path before opening early access. Founding pricing will land with the waitlist.",
+    },
+    body: [
+      "Skedvio and elim-mcp taught us the same lesson: start from a pain we feel every week, then keep the product honest after launch. The next pain is video — brands that need constant short form and have no editor on staff.",
+      "Fylmkit is that product. Brand kit once. Notes in, finished clip out — script, scenes, voiceover, captions, every format. Clothing brands and developer tools will never get the same video.",
+      "We are not opening a waitlist yet. This month is pipeline work: brand fidelity, scene types, and timing that does not feel machine-cut. When it is ready to show, it will show up here and on fylmkit.com.",
+    ],
+    links: [
+      { label: "See Skedvio", href: "/products/skedvio" },
+      { label: "See elim-mcp", href: "/products/elim-mcp" },
+    ],
+  },
+  {
+    slug: "skedvio-on-product-hunt",
+    kind: "news",
+    title: "Skedvio is on Product Hunt",
+    excerpt:
+      "Guest booking is live and the launch is public on Product Hunt. Founding pricing still holds while we keep shipping sync and availability.",
+    date: "2026-08-20",
+    dateLabel: "Aug 20, 2026",
+    author: "13Stack",
+    readingTime: "2 min",
+    announcement: {
+      badge: "Launch",
+      title: "Skedvio · live on Product Hunt",
+      text: "Support the launch, try guest booking, and tell us what breaks. Early users still get founding pricing for the first three months.",
+    },
+    body: [
+      "Putting Skedvio on Product Hunt is not a vanity milestone. It is a forcing function: real traffic, real feedback, and a public record that the booking path works outside our own calendars.",
+      "Guest booking already respects live Google Calendar availability and guest timezones. The Product Hunt page is the easiest way to try it and leave a note if something feels off.",
+      "We will keep iterating on sync edge cases, multi-account weeks, and the AI daily brief. The product walkthrough on this site stays the deeper path if you want the full feature map.",
+    ],
+    links: [
+      {
+        label: "View on Product Hunt",
+        href: "https://www.producthunt.com/products/skedvio-scheduling-intelligence/launches/skedvio?utm_source=other&utm_medium=social",
+        external: true,
+      },
+      { label: "Try Skedvio free", href: "https://skedvio.com", external: true },
+      { label: "Product walkthrough", href: "/products/skedvio" },
+    ],
+  },
+  {
     slug: "skedvio-live-booking",
     kind: "news",
     title: "Skedvio is live for guest booking",
@@ -518,7 +743,7 @@ const blogPosts: BlogPost[] = [
     readingTime: "8 min",
     brief: [
       "Products we use ourselves expose taste and reliability gaps decks never catch.",
-      "Skedvio and elim-mcp are production systems, not portfolio props.",
+      "Skedvio, elim-mcp, and Fylmkit keep that pressure real — live, open source, and next.",
       "Client scoping inherits the same ship and own standard.",
     ],
     sections: [
@@ -1216,7 +1441,12 @@ export const productsPage = {
       "Short updates when something goes live. Longer reads when a lesson is worth writing down.",
     viewAllLabel: "Browse the build log",
     viewAllHref: "/blog",
-    slugs: ["skedvio-live-booking", "elim-mcp-on-npm"],
+    slugs: [
+      "three-products-one-studio",
+      "fylmkit-waitlist-open",
+      "on-brand-video-without-a-video-team",
+      "fylmkit-next-in-the-stack",
+    ],
   },
   skedvio: {
     id: "skedvio",
